@@ -1,0 +1,20 @@
+<div
+  class="annotation"
+  appDraggable
+  (positionChange)="move($event)"
+  (click)="$event.stopPropagation()"
+  [style.left.px]="annotation().x"
+  [style.top.px]="annotation().y"
+>
+  {{ annotation().text }}
+  <button
+    mat-icon-button
+    color="warn"
+    (click)="onRemove($event)"
+    matTooltip="Удалить аннотацию"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+

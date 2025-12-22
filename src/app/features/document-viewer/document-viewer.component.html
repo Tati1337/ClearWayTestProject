@@ -1,0 +1,85 @@
+<mat-toolbar color="primary" class="fixed-toolbar">
+  <span>{{ document().name }}</span>
+  <span class="spacer"></span>
+  <app-zoom-controls
+    [zoom]="zoom()"
+    (zoomChange)="onZoomChange($event)"
+  />
+  <button mat-raised-button color="accent" (click)="onSave()">
+    Save
+  </button>
+</mat-toolbar>
+
+<div class="document-container">
+  <div class="document-content" [style.transform]="scaleTransform()">
+    @for (page of document().pages; track page.number) {
+      <div
+        class="page-wrapper"
+        [class.adding-annotation]="isAddingAnnotation()"
+        (click)="onPageClick($event, page.number)"
+      >
+        <img [src]="page.imageUrl" [alt]="'Page ' + page.number" class="page-image" />
+        <div class="annotations-layer">
+          @for (annotation of getAnnotationsForPage(page.number); track annotation.id) {
+            <app-annotation
+              [annotation]="annotation"
+              (remove)="onRemoveAnnotation($event)"
+              (positionChange)="onAnnotationMove(annotation, $event)"
+            />
+          }
+          
+          @if (annotationInput().visible && annotationInput().pageNumber === page.number) {
+            <div 
+              class="annotation-input-container"
+              [style.left.px]="annotationInput().x"
+              [style.top.px]="annotationInput().y"
+            >
+              <mat-form-field appearance="outline" class="annotation-input-field">
+                <mat-label>Текст аннотации</mat-label>
+                <input 
+                  matInput 
+                  [ngModel]="annotationInput().text"
+                  (ngModelChange)="updateAnnotationInputText($event)"
+                  (keydown)="onAnnotationInputKeydown($event)"
+                  (click)="$event.stopPropagation()"
+                  placeholder="Введите текст..."
+                  autofocus
+                />
+              </mat-form-field>
+              <div class="annotation-input-actions">
+                <button 
+                  mat-icon-button 
+                  color="primary"
+                  (click)="confirmAnnotation()"
+                  [disabled]="!annotationInput().text.trim()"
+                  matTooltip="Добавить"
+                >
+                  <mat-icon>check</mat-icon>
+                </button>
+                <button 
+                  mat-icon-button 
+                  (click)="cancelAddingAnnotation()"
+                  matTooltip="Отмена"
+                >
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+  
+  <div class="controls">
+    <button
+      mat-fab
+      color="primary"
+      (click)="startAddingAnnotation()"
+      matTooltip="Добавить аннотацию"
+    >
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</div>
+
