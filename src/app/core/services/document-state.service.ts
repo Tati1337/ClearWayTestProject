@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Document, Annotation } from '../models/document.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class DocumentStateService {
   private readonly documentSubject$ = new BehaviorSubject<Document | null>(null);
 

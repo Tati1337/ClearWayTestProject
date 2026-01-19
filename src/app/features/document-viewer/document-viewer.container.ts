@@ -11,6 +11,7 @@ import { Annotation, Document } from '../../core/models/document.model';
   selector: 'app-document-viewer-container',
   standalone: true,
   imports: [AsyncPipe, DocumentViewerComponent],
+  providers: [DocumentStateService],
   template: `
     @if (document$ | async; as document) {
       <app-document-viewer

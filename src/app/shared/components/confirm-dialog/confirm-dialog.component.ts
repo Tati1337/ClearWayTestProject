@@ -16,7 +16,7 @@ export interface ConfirmDialogData {
     <mat-dialog-content>
       <p>{{ data.message }}</p>
     </mat-dialog-content>
-    <mat-dialog-actions align="end">
+    <mat-dialog-actions aligne="end">
       <button mat-button (click)="onCancel()">Отмена</button>
       <button mat-button color="warn" (click)="onConfirm()">Удалить</button>
     </mat-dialog-actions>

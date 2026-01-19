@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router';
 
+
+/*Route-level providers контейнер фичи*/
 export const routes: Routes = [
     {
         path: 'viewer/:id',
@@ -13,6 +15,11 @@ export const routes: Routes = [
         pathMatch: 'full'
       }
 ];
+
+
+
+
+
 
 
 

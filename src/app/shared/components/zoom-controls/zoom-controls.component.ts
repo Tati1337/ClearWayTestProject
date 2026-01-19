@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, model } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -28,20 +28,19 @@ import { MatIconModule } from '@angular/material/icon';
   `]
 })
 export class ZoomControlsComponent {
-  zoom = input(100);
-  zoomChange = output<number>();
+  readonly zoom = model.required<number>();
 
   readonly minZoom = 50;
   readonly maxZoom = 200;
 
   increase(): void {
     const newZoom = Math.min(this.zoom() + 10, this.maxZoom);
-    this.zoomChange.emit(newZoom);
+    this.zoom.set(newZoom);
   }
 
   decrease(): void {
     const newZoom = Math.max(this.zoom() - 10, this.minZoom);
-    this.zoomChange.emit(newZoom);
+    this.zoom.set(newZoom);
   }
 }
 

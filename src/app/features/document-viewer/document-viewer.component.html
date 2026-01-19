@@ -1,10 +1,7 @@
 <mat-toolbar color="primary" class="fixed-toolbar">
   <span>{{ document().name }}</span>
   <span class="spacer"></span>
-  <app-zoom-controls
-    [zoom]="zoom()"
-    (zoomChange)="onZoomChange($event)"
-  />
+  <app-zoom-controls [(zoom)]="zoom" />
   <button mat-raised-button color="accent" (click)="onSave()">
     Save
   </button>
@@ -25,6 +22,7 @@
               [annotation]="annotation"
               (remove)="onRemoveAnnotation($event)"
               (positionChange)="onAnnotationMove(annotation, $event)"
+              (click)="$event.stopPropagation()"
             />
           }
           
@@ -33,6 +31,7 @@
               class="annotation-input-container"
               [style.left.px]="annotationInput().x"
               [style.top.px]="annotationInput().y"
+              (click)="$event.stopPropagation()"
             >
               <mat-form-field appearance="outline" class="annotation-input-field">
                 <mat-label>Текст аннотации</mat-label>

@@ -36,7 +36,7 @@ interface AnnotationInputState {
     MatInputModule,
     MatFormFieldModule,
     ZoomControlsComponent,
-    AnnotationComponent
+    AnnotationComponent,
   ],
   templateUrl: './document-viewer.component.html',
   styleUrls: ['./document-viewer.component.scss']
@@ -82,18 +82,8 @@ export class DocumentViewerComponent {
     return grouped;
   });
 
-  onZoomChange(newZoom: number): void {
-    this.zoom.set(newZoom);
-  }
-
   onPageClick(event: MouseEvent, pageNumber: number): void {
     if (!this.isAddingAnnotation()) return;
-    
-    // Если кликаем на существующее окно создания аннотации, предотвращает выполнение
-    const target = event.target as HTMLElement;
-    if (target.closest('app-annotation') || target.closest('.annotation-input-container')) {
-      return;
-    }
 
     const pageWrapper = event.currentTarget as HTMLElement;
     const rect = pageWrapper.getBoundingClientRect();
