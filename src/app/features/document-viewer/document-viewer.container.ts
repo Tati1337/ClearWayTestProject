@@ -6,13 +6,15 @@ import { DocumentViewerComponent } from './document-viewer.component';
 import { DocumentApiService } from '../../core/services/document-api.service';
 import { DocumentStateService } from '../../core/services/document-state.service';
 import { Annotation, Document } from '../../core/models/document.model';
+import { ParentComponent } from '../testOnPush/parent/parent.component';
 
 @Component({
   selector: 'app-document-viewer-container',
   standalone: true,
-  imports: [AsyncPipe, DocumentViewerComponent],
+  imports: [AsyncPipe, DocumentViewerComponent, ParentComponent],
   providers: [DocumentStateService],
   template: `
+  <app-parent></app-parent>
     @if (document$ | async; as document) {
       <app-document-viewer
         [document]="document"
