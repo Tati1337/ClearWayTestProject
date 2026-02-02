@@ -9,6 +9,7 @@ export const routes: Routes = [
           import('./features/document-viewer/document-viewer.container')
             .then(m => m.DocumentViewerContainer)
     },
+  
     {
         path: '',
         redirectTo: '/viewer/1',
