@@ -1,4 +1,4 @@
-import { Component, OnInit, inject, effect } from '@angular/core';
+import { Component, OnInit, inject, effect, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { DocumentViewerComponent } from './document-viewer.component';
@@ -27,6 +27,7 @@ export class DocumentViewerContainer implements OnInit {
   private readonly route = inject(ActivatedRoute);
 
   readonly document = this.state.document;
+  readonly openAuth = signal(false);
 
   constructor() {
     effect(() => {
@@ -56,6 +57,10 @@ export class DocumentViewerContainer implements OnInit {
         savedAt: new Date().toISOString()
       });
     }
+  }
+
+  onAutorization(): void{
+     
   }
 }
 

@@ -10,6 +10,7 @@ import { ZoomControlsComponent } from '../../shared/components/zoom-controls/zoo
 import { AnnotationComponent } from '../../shared/components/annotation/annotation.component';
 import { Document, Annotation } from '../../core/models/document.model';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
+import { AutorizationButtonComponent } from '../../shared/components/autorization-button/autorization-button.component';
 
 interface AnnotationInputState {
   visible: boolean;
@@ -32,6 +33,7 @@ interface AnnotationInputState {
     MatFormFieldModule,
     ZoomControlsComponent,
     AnnotationComponent,
+    AutorizationButtonComponent
   ],
   templateUrl: './document-viewer.component.html',
   styleUrls: ['./document-viewer.component.scss']
