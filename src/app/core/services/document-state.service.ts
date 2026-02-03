@@ -1,21 +1,20 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
 import { Document, Annotation } from '../models/document.model';
 
 @Injectable()
 export class DocumentStateService {
-  private readonly documentSubject$ = new BehaviorSubject<Document | null>(null);
+  private readonly documentSignal = signal<Document | null>(null);
 
-  readonly document$ = this.documentSubject$.asObservable();
+  readonly document = this.documentSignal.asReadonly();
 
   setDocument(doc: Document): void {
-    this.documentSubject$.next(doc);
+    this.documentSignal.set(doc);
   }
 
   updateAnnotations(annotations: Annotation[]): void {
-    const doc = this.documentSubject$.value;
+    const doc = this.documentSignal();
     if (!doc) return;
-    this.documentSubject$.next({ ...doc, annotations });
+    this.documentSignal.set({ ...doc, annotations });
   }
 }
 

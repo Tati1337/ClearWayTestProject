@@ -26,19 +26,19 @@
             />
           }
           
-          @if (annotationInput().visible && annotationInput().pageNumber === page.number) {
+          @if (annotationInputState().visible && annotationInputState().pageNumber === page.number) {
             <div 
               class="annotation-input-container"
-              [style.left.px]="annotationInput().x"
-              [style.top.px]="annotationInput().y"
+              [style.left.px]="annotationInputState().x"
+              [style.top.px]="annotationInputState().y"
               (click)="$event.stopPropagation()"
             >
               <mat-form-field appearance="outline" class="annotation-input-field">
                 <mat-label>Текст аннотации</mat-label>
                 <input 
                   matInput 
-                  [ngModel]="annotationInput().text"
-                  (ngModelChange)="updateAnnotationInputText($event)"
+                  [value]="annotationText()"
+                  (input)="annotationFormModel.set({ text: $any($event.target).value })"
                   (keydown)="onAnnotationInputKeydown($event)"
                   (click)="$event.stopPropagation()"
                   placeholder="Введите текст..."
@@ -50,7 +50,7 @@
                   mat-icon-button 
                   color="primary"
                   (click)="confirmAnnotation()"
-                  [disabled]="!annotationInput().text.trim()"
+                  [disabled]="!annotationText().trim()"
                   matTooltip="Добавить"
                 >
                   <mat-icon>check</mat-icon>

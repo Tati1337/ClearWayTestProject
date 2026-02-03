@@ -1,6 +1,4 @@
 import { Component, input, output, inject, signal, computed, ChangeDetectionStrategy, Signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -18,7 +16,6 @@ interface AnnotationInputState {
   x: number;
   y: number;
   pageNumber: number;
-  text: string;
 }
 
 @Component({
@@ -26,8 +23,6 @@ interface AnnotationInputState {
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
-    FormsModule,
     MatToolbarModule,
     MatButtonModule,
     MatDialogModule,
@@ -58,20 +53,23 @@ export class DocumentViewerComponent {
   });
   
 
-  readonly annotationInput = signal<AnnotationInputState>({
+  readonly annotationInputState = signal<AnnotationInputState>({
     visible: false,
     x: 0,
     y: 0,
-    pageNumber: 0,
-    text: ''
+    pageNumber: 0
   });
+
+  readonly annotationFormModel = signal({ text: '' });
+  
+  readonly annotationText = computed(() => this.annotationFormModel().text);
 
 
   readonly annotationsByPage = computed(() => {
     const annotations = this.document().annotations || [];
     const grouped = new Map<number, Annotation[]>();
     
-    annotations.forEach(annotation => {
+    annotations.forEach((annotation: Annotation) => {
       const pageNum = annotation.pageNumber;
       if (!grouped.has(pageNum)) {
         grouped.set(pageNum, []);
@@ -90,14 +88,13 @@ export class DocumentViewerComponent {
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
-  
-    this.annotationInput.set({
+    this.annotationInputState.set({
       visible: true,
       x,
       y,
-      pageNumber,
-      text: ''
+      pageNumber
     });
+    this.annotationFormModel.set({ text: '' });
   }
 
   startAddingAnnotation(): void {
@@ -106,21 +103,21 @@ export class DocumentViewerComponent {
 
   cancelAddingAnnotation(): void {
     this.isAddingAnnotation.set(false);
-    this.annotationInput.update(state => ({
+    this.annotationInputState.update(state => ({
       ...state,
-      visible: false,
-      text: ''
+      visible: false
     }));
+    this.annotationFormModel.set({ text: '' });
   }
 
   confirmAnnotation(): void {
-    const inputState = this.annotationInput();
-    const text = inputState.text.trim();
+    const text = this.annotationText().trim();
     if (!text) {
       this.cancelAddingAnnotation();
       return;
     }
 
+    const inputState = this.annotationInputState();
     const newAnnotation: Annotation = {
       id: Date.now().toString(),
       text,
@@ -133,10 +130,6 @@ export class DocumentViewerComponent {
     this.annotationsChange.emit(annotations);
 
     this.cancelAddingAnnotation();
-  }
-
-  updateAnnotationInputText(text: string): void {
-    this.annotationInput.update(state => ({ ...state, text }));
   }
 
   onAnnotationInputKeydown(event: KeyboardEvent): void {

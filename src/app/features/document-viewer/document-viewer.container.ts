@@ -1,7 +1,6 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, effect } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AsyncPipe } from '@angular/common';
-import { take } from 'rxjs/operators';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { DocumentViewerComponent } from './document-viewer.component';
 import { DocumentApiService } from '../../core/services/document-api.service';
 import { DocumentStateService } from '../../core/services/document-state.service';
@@ -10,12 +9,12 @@ import { Annotation, Document } from '../../core/models/document.model';
 @Component({
   selector: 'app-document-viewer-container',
   standalone: true,
-  imports: [AsyncPipe, DocumentViewerComponent],
+  imports: [DocumentViewerComponent],
   providers: [DocumentStateService],
   template: `
-    @if (document$ | async; as document) {
+    @if (document(); as doc) {
       <app-document-viewer
-        [document]="document"
+        [document]="doc"
         (annotationsChange)="onAnnotationsChange($event)"
         (save)="onSave()"
       />
@@ -27,7 +26,16 @@ export class DocumentViewerContainer implements OnInit {
   private readonly state = inject(DocumentStateService);
   private readonly route = inject(ActivatedRoute);
 
-  readonly document$ = this.state.document$;
+  readonly document = this.state.document;
+
+  constructor() {
+    effect(() => {
+      const doc = this.document();
+      if (doc) {
+        console.log('Document loaded:', doc.name);
+      }
+    });
+  }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id')!;
@@ -41,14 +49,13 @@ export class DocumentViewerContainer implements OnInit {
   }
 
   onSave(): void {
-    this.state.document$.pipe(take(1)).subscribe((document: Document | null) => {
-      if (document) {
-        console.log({
-          ...document,
-          savedAt: new Date().toISOString()
-        });
-      }
-    });
+    const document = this.document();
+    if (document) {
+      console.log({
+        ...document,
+        savedAt: new Date().toISOString()
+      });
+    }
   }
 }
 
