@@ -1,0 +1,35 @@
+<form [formGroup]="authForm">
+    <div class="form-row">
+        <label for="email">Email</label>
+        <input id="email" type="email" formControlName="email"/>
+    </div>
+    
+    <div class="form-row">
+        <label for="password">Password</label>
+        <input id="password" type="password" formControlName="password"/>
+    </div>
+    
+    <div class="form-row">
+        <label for="confirmPassword">Confirm Password</label>
+        <input id="confirmPassword" type="password" formControlName="confirmPassword"/>
+    </div>
+    
+    <div formGroupName="address">
+        <div class="form-row">
+            <label for="street">Street</label>
+            <input id="street" type="text" formControlName="street">
+        </div>
+        <div class="form-row">
+            <label for="city">City</label>
+            <input id="city" type="text" formControlName="city"/>
+        </div>
+    </div>
+    
+    <label for="rememberMe" class="checkbox-row">
+        <input id="rememberMe" type="checkbox" formControlName="rememberMe"/>
+        Remember me for next session
+    </label>
+</form>
+<button mat-raised-button  type="button" (click)="onUpdate()">Update</button>
+<p>Complete the form to enable button.</p>
+<button mat-raised-button  [disabled]="authForm.invalid" (click)="onSubmit()">Submit</button>

@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatButtonModule } from "@angular/material/button";
+import { MatDialog } from '@angular/material/dialog';
+import { AppAutorizationComponent } from '../../../features/app-autorization/app-autorization.component';
 
 @Component({
     selector:'autorization-button',
@@ -8,8 +10,11 @@ import { MatButtonModule } from "@angular/material/button";
     imports: [MatButtonModule]
 })
 export class AutorizationButtonComponent {
+    private readonly dialog = inject(MatDialog);
     
     openAutorizeForm(): void{
-        // openAuth.set(true)
+        this.dialog.open( AppAutorizationComponent ,{
+            width: '500px',
+        });
     }
 }
