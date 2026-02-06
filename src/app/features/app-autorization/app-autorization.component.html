@@ -14,22 +14,17 @@
         <input id="confirmPassword" type="password" formControlName="confirmPassword"/>
     </div>
     
-    <div formGroupName="address">
-        <div class="form-row">
-            <label for="street">Street</label>
-            <input id="street" type="text" formControlName="street">
-        </div>
-        <div class="form-row">
-            <label for="city">City</label>
-            <input id="city" type="text" formControlName="city"/>
-        </div>
+    <div class="form-row">
+        <label for="phone">Phone</label>
+        <input id="'phone" type="text" formControlName="phone"/>
     </div>
+ 
     
-    <label for="rememberMe" class="checkbox-row">
-        <input id="rememberMe" type="checkbox" formControlName="rememberMe"/>
+    <label for="agree" class="checkbox-row">
+        <input id="agree" type="checkbox" formControlName="agree"/>
         Remember me for next session
     </label>
 </form>
-<button mat-raised-button  type="button" (click)="onUpdate()">Update</button>
+<!-- <button mat-raised-button  type="button" (click)="onUpdate()">Cancel</button> -->
 <p>Complete the form to enable button.</p>
 <button mat-raised-button  [disabled]="authForm.invalid" (click)="onSubmit()">Submit</button>
